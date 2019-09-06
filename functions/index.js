@@ -72,10 +72,12 @@ const isEmail = (email) => {
     const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const testing =  regEx.test(email);
     return testing
-    // if(regEx.test(email) == true){
-    //    return true;
-    // }
-    // else return false;
+}
+const isEmpty = (string) => {     
+    if(string.trim() === ''){
+       return true;
+    } 
+    else return false;  
 }
 
 
@@ -89,18 +91,10 @@ app.post('/signup', (req, res) => {
         handle: req.body.handle
     };
 
-    const isEmpty = (string) => {
-        
-        if(string.trim() === ''){
-           return true;
-        } 
-        else return false;  
-    }
-
+  
     let errors = {};
 
     if(isEmpty(newUser.email)){
-
         errors.email = 'Field must not be empty'
     }else if(!isEmail(newUser.email)){
          errors.email = 'Field must contain a valid email'
@@ -153,7 +147,36 @@ app.post('/signup', (req, res) => {
         
     })
 
-})
+});
+
+app.post('/login', (req, res) => {
+    const user = {
+        email: req.body.email,
+        password: req.body.password
+    }
+    let errors = {};
+    if(isEmpty(user.email)) errors.email = 'Must not be empty';
+    if(isEmpty(user.password)) errors.password = 'Must not be empty';
+
+    if(Object.keys(errors).length > 0) return res.status(400).json(errors);
+
+    firebaseLib.auth().signInWithEmailAndPassword(user.email, user.password)
+    .then(data => {
+        return data.user.getIdToken();
+    })
+    .then(token => {
+        return res.json({token})
+    })
+    .catch(err => {
+        if(err.code = 'auth/wrong-password') return res.status(403).json({general: 'Wrong credentials, please try again'})
+        else{
+        console.error(err);
+        return res.status(500).json({error: err.code});
+        }
+        
+    })
+
+});
 
 
 exports.api = functions.https.onRequest(app);
