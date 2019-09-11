@@ -2,10 +2,12 @@ const admin = require('firebase-admin');
 const serviceAccount = require("../serviceAccountKey.json");
 
 
-admin.initializeApp({
+admin.initializeApp(
+  {
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://socialape-eeef0.firebaseio.com"
-  });
+    storageBucket: "https://socialape-eeef0.firebaseio.com"
+  }
+  );
 
   const db = admin.firestore();
 
