@@ -32,6 +32,21 @@ exports.onFileChange  = functions.storage.object().onFinalize(event => {
     });
 });
 
+const {Storage} = require('@google-cloud/storage');
+const os = require('os');
+const path = require('path');
+const spawn = require('child-process-promise').spawn;
+const cors = require('cors')({origin: true});
+const Busboy = require('busboy');
+const fs = require('fs');   
+const gsConfig = {
+    projectId: "socialape-eeef0",
+    keyFilename: "serviceAccountKey.json"
+}
+
+
+
+
 exports.fileUpload = functions.https.onRequest((req,res) => {
  cors(req, res, () => {
     if(req.method !== 'POST'){
