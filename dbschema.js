@@ -21,6 +21,15 @@ let db = {
         
         }
     ],
+    comments: [
+        {
+            userHandle: 'user',
+            screamId: 'SMXlZKqsuPu9x',
+            body: 'this is the scream body',
+            createdAt: '2019-09-03T15:45:28.610Z',
+
+        }
+    ],
     userDetails: [
         {
             credentials: {
