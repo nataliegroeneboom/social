@@ -30,6 +30,16 @@ let db = {
 
         }
     ],
+    notifications: [
+        {
+            recipient: 'user',
+            sender: 'john',
+            read: 'true | false',
+            screamId: 'SMXlZKqsuPu9x',
+            type: 'like | comment',
+            createdAt: '2019-09-03T15:45:28.610Z'
+        }
+    ],
     userDetails: [
         {
             credentials: {
